@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const PersonForm = ({ onAddPerson, newName, setNewName, newNumber, setNewNumber }) => (
   <form>
@@ -21,11 +21,15 @@ const Persons = ({ persons }) => (
 )
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+
+  useEffect(() => {
+    fetch('http://localhost:3001/persons')
+      .then(response => response.json())
+      .then(data => setPersons(data))
+  }, [])
 
   const handleAddPerson = (e) => {
     e.preventDefault()
